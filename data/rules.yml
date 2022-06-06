@@ -1,0 +1,75 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: activate assessment anytime the user asks for risk prediction
+  steps:
+  - intent: risk_assess
+  - action: simple_risk_form
+  - active_loop: simple_risk_form
+
+- rule: Elicitation form
+  condition:
+  - active_loop: simple_risk_form
+  steps:
+  - action: simple_risk_form
+  - slot_was_set: 
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_slots_values
+  - action: action_risk_assessment
+  - action: action_explain_risk
+  - action: utter_link
+  - action: utter_explain_link
+  - action: utter_ask_bmi
+  - intent: affirm
+  - action: action_set_height
+  - action: action_set_weight
+  - action: action_calculate_bmi
+  - action: utter_inform_bmi
+  
+
+
+#   - slot_was_set: 
+#     - requested_slot: null
+#   - active_loop: null
+#   - action: utter_slots_values
+#   - action: action_risk_assessment
+#   - action: utter_link
+
+# - rule: Activate form
+#   steps:
+#   - intent: greet
+#   - action: utter_welcome-greet
+#   - action: utter_disclaimer
+#   - action: simple_risk_form
+#   - active_loop: simple_risk_form
+
+# - rule: Elicitation form
+#   condition:
+#   - active_loop: simple_risk_form
+#   steps:
+#   - action: simple_risk_form
+#   - slot_was_set: 
+#     - requested_slot: null
+#   - active_loop: null
+#   - action: utter_slots_values
+#   - action: action_risk_assessment
+#   - action: utter_link
+#   - action: utter_submit_risk
+#   - action: utter_ask_bmi
+#   - intent: affirm
+#   - action: action_set_height
+#   - action: action_set_weight
+#   - action: action_calculate_bmi
+#   - action: utter_inform_bmi
